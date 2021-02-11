@@ -1,23 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import Header from "./components/Header";
+import Form from "./components/Form";
+import React, { useState } from "react";
+import Mensaje from "./components/Mensaje";
+import Result from "./components/Result";
+import Spinner from "./components/Spinner";
 
 function App() {
+  //state
+  const [cantidad, guardarCantidad] = useState(0);
+  const [plazo, guardarPlazo] = useState("");
+  const [total, guardarTotal] = useState(0);
+  const [cargando, guardarCargando] = useState(false);
+
+  let components;
+  if (cargando) {
+    components = <Spinner />;
+  } else if (total === 0) {
+    components = <Mensaje />;
+  } else {
+    components = <Result total={total} plazo={plazo} cantidad={cantidad} />;
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header titulo={"Cotizador de prestamo"} />
+      <div className="container">
+        <Form
+          cantidad={cantidad}
+          guardarCantidad={guardarCantidad}
+          plazo={plazo}
+          guardarPlazo={guardarPlazo}
+          total={total}
+          guardarTotal={guardarTotal}
+          guardarCargando={guardarCargando}
+        />
+        <div className="mensajes">{components}</div>
+      </div>
     </div>
   );
 }
